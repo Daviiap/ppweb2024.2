@@ -1,0 +1,13 @@
+services:
+  api:
+    container_name: api
+    restart: unless-stopped
+    env_file:
+      - ./.env.example
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    volumes:
+      - .:/usr/app
+    ports:
+      - '3081:3081'
