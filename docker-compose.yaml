@@ -10,4 +10,4 @@ services:
     volumes:
       - .:/usr/app
     ports:
-      - '3081:3081'
+      - '${PORT}:${PORT}'
