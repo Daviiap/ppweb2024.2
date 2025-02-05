@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool, QueryResult } from "pg";
 import UserRepository from "../../domain/repositories/UserRepository";
 import User from "../../domain/User";
 import DatabaseError from "../errors/DatabaseError";
@@ -7,21 +7,27 @@ import UserNotFoundError from "../errors/UserNotFoundError";
 export default class UserRepositorySQL implements UserRepository {
   constructor(private readonly pool: Pool) {}
   async findByEmail(email: string): Promise<User> {
+    let result: QueryResult<UserRow>;
+
     try {
-      const result = await this.pool.query(
+      result = await this.pool.query<UserRow>(
         `SELECT * FROM person WHERE email = $1`,
         [email]
       );
-
-      return new User(
-        result.rows[0].id,
-        result.rows[0].name,
-        result.rows[0].email,
-        result.rows[0].password
-      );
     } catch (error) {
+      throw new DatabaseError(`Error finding user by email: ${error}`);
+    }
+
+    if (!result.rowCount) {
       throw new UserNotFoundError(email);
     }
+
+    return new User(
+      result.rows[0].id,
+      result.rows[0].name,
+      result.rows[0].email,
+      result.rows[0].password
+    );
   }
 
   public async exists(email: string): Promise<boolean> {
@@ -50,4 +56,11 @@ export default class UserRepositorySQL implements UserRepository {
       throw new DatabaseError(`Error creating user: ${error}`);
     }
   }
+}
+
+interface UserRow {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
 }
