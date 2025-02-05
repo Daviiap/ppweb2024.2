@@ -34,7 +34,7 @@ export default class LoginControllerHttp implements ControllerHttp {
           email: loginInfo.user.email,
         };
 
-        return { statusCode: 201, body: result };
+        return { statusCode: 200, body: result };
       },
     });
   }
