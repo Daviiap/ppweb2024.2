@@ -3,9 +3,10 @@ import ExpressAdapter from "./infrastructure/Server";
 import UseCasesFactory from "./application/factory/UseCasesFactory";
 import HealthCheckControllerHttp from "./presentation/controllers/HealthCheckController";
 
-dotenv.config({ path: ".env" });
 
 async function main() {
+  dotenv.config({ path: ".env" });
+
   const httpServer = new ExpressAdapter();
 
   const useCasesFactory = new UseCasesFactory();

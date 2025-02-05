@@ -11,3 +11,34 @@ services:
       - .:/usr/app
     ports:
       - '${PORT}:${PORT}'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db_prog_web
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: planningpoker
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: 'pg_isready -U $$POSTGRES_USER'
+      interval: 5s
+      timeout: 30s
+      retries: 5
+
+  flyway:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ./flyway.conf.example:/flyway/conf/flyway.conf
+      - ./migrations:/flyway/sql
+    depends_on:
+      postgres:
+        condition: service_healthy
