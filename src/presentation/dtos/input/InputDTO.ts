@@ -1,11 +1,12 @@
 import { ValidationError, validateSync } from "class-validator";
+import InputValidationError from "../../errors/InputValidationError";
 
 export default class InputDTO {
   public validate(): void {
     const errors = validateSync(this, { skipMissingProperties: false });
     if (errors.length > 0) {
       const messages = this.flattenValidationErrors(errors);
-      throw new Error(`${messages.join(", ")}`);
+      throw new InputValidationError(`${messages.join(", ")}`);
     }
   }
 
