@@ -1,4 +1,6 @@
 import * as argon2 from "argon2";
+import HashingError from "../errors/HashingError";
+import PasswordVerifyError from "../errors/PasswordVerifyError";
 
 export default class PassworHashingdUtil {
   static async hash(password: string): Promise<string> {
@@ -6,7 +8,7 @@ export default class PassworHashingdUtil {
       const hash = await argon2.hash(password);
       return hash;
     } catch (error) {
-      throw new Error("Error hashing password");
+      throw new HashingError(error);
     }
   }
 
@@ -17,7 +19,7 @@ export default class PassworHashingdUtil {
     try {
       return await argon2.verify(hash, password);
     } catch (error) {
-      throw new Error("Error verifying password");
+      throw new PasswordVerifyError(error);
     }
   }
 }
