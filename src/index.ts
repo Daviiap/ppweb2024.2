@@ -1,29 +1,32 @@
-import dotenv from "dotenv";
-import cors from "cors";
-import express, { Request, Response } from "express";
+import * as dotenv from "dotenv";
+import ExpressAdapter from "./infrastructure/Server";
+import UseCasesFactory from "./application/factory/UseCasesFactory";
+import HealthCheckControllerHttp from "./presentation/controllers/HealthCheckController";
+
+dotenv.config({ path: ".env" });
 
 async function main() {
-  dotenv.config({
-    path: "./.env",
+  const httpServer = new ExpressAdapter();
+
+  const useCasesFactory = new UseCasesFactory();
+
+  const healthCheckController = new HealthCheckControllerHttp(
+    httpServer,
+    useCasesFactory
+  );
+  healthCheckController.setAllControllerRoutes();
+
+  httpServer.listen(Number(process.env.PORT || 3080));
+
+  process.on("SIGTERM", () => {
+    httpServer.shutdown();
   });
-  const app = express();
-  const router = express.Router();
-
-  router.route("/").get((_: Request, res: Response) => {
-    res.sendStatus(200);
+  process.on("SIGINT", () => {
+    httpServer.shutdown();
   });
-
-  app.use(router);
-  app.use(express.json());
-  app.use(cors({ origin: "*" }));
-
-  app.listen(process.env.PORT);
 }
 
-main()
-  .then(() => {
-    console.log("server started successfully!");
-  })
-  .catch((err) => {
-    console.error("error starting server: ", err);
-  });
+main().catch((err) => {
+  console.error("Init fail:", err);
+  process.exit(1);
+});
