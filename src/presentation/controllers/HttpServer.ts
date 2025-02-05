@@ -7,7 +7,6 @@ export default interface HttpServer {
 export type routeConfig = {
   method: "get" | "post" | "put" | "delete" | "patch";
   url: string;
-  auth: "company" | "microservice" | "none";
-  file?: boolean;
+  auth: "none";
   handle: (request: HttpRequest) => Promise<HttpResponse>;
 };

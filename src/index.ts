@@ -1,9 +1,13 @@
 import * as dotenv from "dotenv";
 import { Pool, PoolConfig } from "pg";
-import ExpressAdapter from "./infrastructure/Server";
+import ExpressAdapter from "./infrastructure/express/Server";
 import UseCasesFactory from "./application/factory/UseCasesFactory";
 import HealthCheckControllerHttp from "./presentation/controllers/HealthCheckController";
 import HealthRepositorySQL from "./infrastructure/repositories/HealthRepositorySQL";
+import UserRepositorySQL from "./infrastructure/repositories/UserRepositorySQL";
+import RegisterControllerHttp from "./presentation/controllers/user/RegisterController";
+import ErrorGlobalMiddleware from "./infrastructure/express/middleware/ErrorMiddleware";
+
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -21,15 +25,22 @@ async function main() {
   }
 
   const healthRepository = new HealthRepositorySQL(pool);
+  const userRepository = new UserRepositorySQL(pool);
 
-  const httpServer = new ExpressAdapter();
-  const useCasesFactory = new UseCasesFactory(healthRepository);
+  const errorMiddleware = new ErrorGlobalMiddleware();
+  const httpServer = new ExpressAdapter(errorMiddleware);
+  const useCasesFactory = new UseCasesFactory(healthRepository, userRepository);
 
   const healthCheckController = new HealthCheckControllerHttp(
     httpServer,
     useCasesFactory
   );
   healthCheckController.setAllControllerRoutes();
+  const registerController = new RegisterControllerHttp(
+    httpServer,
+    useCasesFactory
+  );
+  registerController.setAllControllerRoutes();
 
   httpServer.listen(Number(process.env.PORT));
 

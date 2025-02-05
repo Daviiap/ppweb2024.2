@@ -3,13 +3,16 @@ import * as http from "http";
 import cors from "cors";
 import HttpServer, {
   routeConfig,
-} from "../presentation/controllers/HttpServer";
+} from "../../presentation/controllers/HttpServer";
+import ErrorGlobalMiddleware from "./middleware/ErrorMiddleware";
 
 export default class ExpressAdapter implements HttpServer {
   private readonly app: Express;
   private server: http.Server;
 
-  constructor() {
+  constructor(
+    private readonly errorMiddleware: ErrorGlobalMiddleware
+  ) {
     this.app = express();
     this.app.use(express.json());
     this.app.use(cors());
@@ -31,6 +34,7 @@ export default class ExpressAdapter implements HttpServer {
   }
 
   listen(port: number): void {
+    this.app.use(this.errorMiddleware.handleGlobalErrorFunc());
     this.server = this.app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
