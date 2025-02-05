@@ -2,9 +2,10 @@
 
 ## Descrição
 
-O projeto tem como objetivo
+O projeto tem como objetivo criar um sistema de planning poker para o desenvolvimento de um aplicativo de gestão de projetos.
 
 ## Docs
 
-[diagramas](./docs/diagrams.md)
-[swagger](https://app.swaggerhub.com/apis/DaviPontes/ProjetoPWEB/1.0.0#/)
+- [diagramas](./docs/diagrams.md)
+
+- [swagger](https://app.swaggerhub.com/apis/DaviPontes/ProjetoPWEB/1.0.0#/)
