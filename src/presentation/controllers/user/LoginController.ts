@@ -1,10 +1,11 @@
 import UseCasesFactory from "../../../application/factory/UseCasesFactory";
-import RegisterUserInputDTO from "../../dtos/input/RegisterUserInputDTO";
+import LoginInputDTO from "../../dtos/input/LoginInputDTO";
+import LoginOutputDTO from "../../dtos/output/LoginOutputDTO";
 import RegisterUserOutputDTO from "../../dtos/output/RegisterUserOutputDTO";
 import ControllerHttp from "../ControllerHttp";
 import HttpServer from "../HttpServer";
 
-export default class RegisterControllerHttp implements ControllerHttp {
+export default class LoginControllerHttp implements ControllerHttp {
   constructor(
     readonly httpServer: HttpServer,
     readonly useCasesFactory: UseCasesFactory
@@ -13,23 +14,25 @@ export default class RegisterControllerHttp implements ControllerHttp {
   setAllControllerRoutes(): void {
     this.httpServer.addRoute({
       method: "post",
-      url: "/register",
+      url: "/login",
       auth: "none",
-      handle: async request => {
-        const input = new RegisterUserInputDTO();
+      handle: async (request) => {
+        const input = new LoginInputDTO();
         input.email = request.body.email as string;
-        input.name = request.body.name as string;
         input.password = request.body.password as string;
         input.validate();
 
-        const createdUser = await this.useCasesFactory
-          .createRegisterUserUseCase()
+        const loginInfo = await this.useCasesFactory
+          .createLoginUseCase()
           .execute(input);
 
-        const result = new RegisterUserOutputDTO();
-        result.id = createdUser.getId();
-        result.name = createdUser.getName();
-        result.email = createdUser.getEmail();
+        const result = new LoginOutputDTO();
+        result.token = loginInfo.token;
+        result.user = {
+          id: loginInfo.user.id,
+          name: loginInfo.user.name,
+          email: loginInfo.user.email,
+        };
 
         return { statusCode: 201, body: result };
       },

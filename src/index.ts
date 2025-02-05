@@ -7,7 +7,8 @@ import HealthRepositorySQL from "./infrastructure/repositories/HealthRepositoryS
 import UserRepositorySQL from "./infrastructure/repositories/UserRepositorySQL";
 import RegisterControllerHttp from "./presentation/controllers/user/RegisterController";
 import ErrorGlobalMiddleware from "./infrastructure/express/middleware/ErrorMiddleware";
-
+import JwtUtil from "./infrastructure/utils/JWTUtil";
+import LoginControllerHttp from "./presentation/controllers/user/LoginController";
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -27,20 +28,30 @@ async function main() {
   const healthRepository = new HealthRepositorySQL(pool);
   const userRepository = new UserRepositorySQL(pool);
 
+  const jwtUtil = new JwtUtil(process.env.JWT_SECRET_KEY as string);
+
+  const useCasesFactory = new UseCasesFactory(
+    healthRepository,
+    userRepository,
+    jwtUtil
+  );
+
   const errorMiddleware = new ErrorGlobalMiddleware();
   const httpServer = new ExpressAdapter(errorMiddleware);
-  const useCasesFactory = new UseCasesFactory(healthRepository, userRepository);
 
   const healthCheckController = new HealthCheckControllerHttp(
     httpServer,
     useCasesFactory
   );
-  healthCheckController.setAllControllerRoutes();
   const registerController = new RegisterControllerHttp(
     httpServer,
     useCasesFactory
   );
+  const loginController = new LoginControllerHttp(httpServer, useCasesFactory);
+
+  healthCheckController.setAllControllerRoutes();
   registerController.setAllControllerRoutes();
+  loginController.setAllControllerRoutes();
 
   httpServer.listen(Number(process.env.PORT));
 
