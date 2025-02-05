@@ -7,6 +7,8 @@
     "build": "tsc",
     "start": "node ./dist/index.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
+    "local": "docker compose up",
+    "down-local": "docker compose down -v",
     "create_migration": "./scripts/create_migration.sh",
     "migrate": "./scripts/migrate.sh"
   },
