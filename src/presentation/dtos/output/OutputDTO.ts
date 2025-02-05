@@ -1,1 +1,1 @@
-export default class OutputDTO {}
+export default interface OutputDTO {}
