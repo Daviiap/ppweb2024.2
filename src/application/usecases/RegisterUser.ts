@@ -1,6 +1,7 @@
 import UserRepository from "../../domain/repositories/UserRepository";
 import User from "../../domain/User";
 import UserAlreadyExistsError from "../errors/UserAlreadyExistError";
+import PassworHashingdUtil from "../utils/PasswordHashingUtil";
 import UseCase from "./UseCase";
 
 export default class RegisterUserUseCase implements UseCase<Input, Output> {
@@ -12,7 +13,9 @@ export default class RegisterUserUseCase implements UseCase<Input, Output> {
       throw new UserAlreadyExistsError(input.email);
     }
 
-    const user = User.create(input.name, input.email, input.password);
+    const passwordHash = await PassworHashingdUtil.hash(input.password);
+
+    const user = User.create(input.name, input.email, passwordHash);
 
     await this.userRepository.createUser(user);
 
