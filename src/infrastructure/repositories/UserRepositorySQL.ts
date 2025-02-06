@@ -3,14 +3,15 @@ import UserRepository from "../../domain/repositories/UserRepository";
 import User from "../../domain/User";
 import DatabaseError from "../errors/DatabaseError";
 import UserNotFoundError from "../errors/UserNotFoundError";
+import UserDatabaseRow from "../dtos/UserDatabaseRow";
 
 export default class UserRepositorySQL implements UserRepository {
   constructor(private readonly pool: Pool) {}
   async findByEmail(email: string): Promise<User> {
-    let result: QueryResult<UserRow>;
+    let result: QueryResult<UserDatabaseRow>;
 
     try {
-      result = await this.pool.query<UserRow>(
+      result = await this.pool.query<UserDatabaseRow>(
         `SELECT * FROM person WHERE email = $1`,
         [email]
       );
@@ -56,11 +57,4 @@ export default class UserRepositorySQL implements UserRepository {
       throw new DatabaseError(`Error creating user: ${error}`);
     }
   }
-}
-
-interface UserRow {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
 }
