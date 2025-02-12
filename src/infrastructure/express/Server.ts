@@ -8,6 +8,7 @@ import ErrorGlobalMiddleware from "./middleware/ErrorMiddleware";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import path from "path";
+import yaml from "yamljs"
 
 export default class ExpressAdapter implements HttpServer {
   private readonly app: Express;
@@ -16,12 +17,7 @@ export default class ExpressAdapter implements HttpServer {
   constructor(private readonly errorMiddleware: ErrorGlobalMiddleware) {
     this.app = express();
 
-    const swaggerDocument = JSON.parse(
-      fs.readFileSync(
-        path.join(__dirname, "../../../docs/routes/swagger.json"),
-        "utf-8"
-      )
-    );
+    const swaggerDocument = yaml.load(path.join(__dirname, "../../../docs/openapi.yaml"));
     this.app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     this.app.use(express.json());

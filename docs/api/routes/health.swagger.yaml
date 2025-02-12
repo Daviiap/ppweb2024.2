@@ -1,0 +1,15 @@
+get:
+  tags:
+    - "Health"
+  summary: "Check if the server is running"
+  responses:
+    "200":
+      description: "Server is running"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              healthy:
+                type: "boolean"
+                example: true

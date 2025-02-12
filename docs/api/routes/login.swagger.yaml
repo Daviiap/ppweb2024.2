@@ -1,0 +1,88 @@
+post:
+  tags:
+    - "User"
+  summary: "Login to the system"
+  requestBody:
+    description: "Account to login to"
+    required: true
+    content:
+      application/json:
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              example: "john_doe@example.org"
+              description: "Email of the user"
+            password:
+              type: "string"
+              example: "Password@123"
+              description: "Password of the user"
+          required:
+            - "email"
+            - "password"
+  responses:
+    "200":
+      description: "Login made successfully"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              token:
+                type: "string"
+                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ5OTU0NTI0LTMzNGEtNGE2MC05NjRhLTA5YTI5OWU1NGQxNSIsIm5hbWUiOiJEYXZpIEFuZHJhZGUgUG9udGVzIiwiZW1haWwiOiJkYXZpaS5zYXBpZW5zQGdtYWlsLmNvbSIsImlhdCI6MTczOTMyODczNywiZXhwIjoxNzM5MzMyMzM3fQ.XC6p1DAQRazaItFyF_-bBGdF0mNGZzdpoN2eIewWreI"
+                description: "JWT token to be used on subsequent requests"
+              user:
+                type: "object"
+                description: "User object"
+                properties:
+                  id:
+                    type: "string"
+                    example: "d9954524-334a-4a60-964a-09a299e54d15"
+                    description: "ID of the user"
+                  name:
+                    type: "string"
+                    example: "John Doe"
+                    description: "Name of the user"
+                  email:
+                    type: "string"
+                    example: "john_doe@example.org"
+                    description: "Email of the user"
+                required:
+                  - "id"
+                  - "name"
+                  - "email"
+            required:
+              - "token"
+              - "user"
+    "400":
+      description: "Bad request"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                description: "ID of the error"
+              message:
+                type: "string"
+                example: "Bad request: email should not be empty, email must be a string"
+                description: "Message of the error"
+    "401":
+      description: "Bad request"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                description: "ID of the error"
+              message:
+                type: "string"
+                example: "Unauthorized: Invalid credentials"
+                description: "Message of the error"

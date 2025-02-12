@@ -10,7 +10,8 @@
     "local": "docker compose up",
     "down-local": "docker compose down -v",
     "create_migration": "./scripts/create_migration.sh",
-    "migrate": "./scripts/migrate.sh"
+    "migrate": "./scripts/migrate.sh",
+    "build-docs": "swagger-cli bundle docs/api/swagger.yaml --outfile docs/openapi.yaml --type yaml"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "@types/pg": "^8.11.11",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.7",
+    "@types/yamljs": "^0.2.34",
     "nodemon": "^3.1.9",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
@@ -36,6 +38,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   }
 }

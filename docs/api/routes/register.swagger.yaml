@@ -1,0 +1,63 @@
+post:
+  tags:
+    - "User"
+  summary: "Create an account on the system"
+  requestBody:
+    description: "Account to be created"
+    required: true
+    content:
+      application/json:
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              example: "John Doe"
+              description: "Name of the user"
+            email:
+              type: "string"
+              example: "john_doe@example.org"
+              description: "Email of the user"
+            password:
+              type: "string"
+              example: "Password@123"
+              description: "Password of the user"
+          required:
+            - "name"
+            - "email"
+            - "password"
+  responses:
+    "201":
+      description: "Account created successfully"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "d9954524-334a-4a60-964a-09a299e54d15"
+                description: "ID of the user"
+              name:
+                type: "string"
+                example: "John Doe"
+                description: "Name of the user"
+              email:
+                type: "string"
+                example: "john_doe@example.org"
+                description: "Email of the user"
+    "400":
+      description: "Bad request"
+      content:
+        application/json:
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "string"
+                example: "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                description: "ID of the error"
+              message:
+                type: "string"
+                example: "Bad request: email should not be empty, email must be a string"
+                description: "Message of the error"

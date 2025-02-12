@@ -1,0 +1,19 @@
+openapi: "3.0.0"
+info:
+  title: "Plannig Poker API"
+  version: "1.0.0"
+  description: "API to handle Planning Poker requests"
+servers:
+  - url: "http://localhost:3080"
+tags:
+  - name: "Health"
+    description: "Operations related to health check"
+  - name: "User"
+    description: "Operations related to user management"
+paths:
+  /health:
+    $ref: "./routes/health.swagger.yaml"
+  /register:
+    $ref: "./routes/register.swagger.yaml"
+  /login:
+    $ref: "./routes/login.swagger.yaml"
