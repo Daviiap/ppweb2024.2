@@ -1,6 +1,7 @@
 import UserRepository from "../../domain/repositories/UserRepository";
+import User from "../../domain/User";
 import JwtUtil from "../../infrastructure/utils/JWTUtil";
-import InvalidPasswordError from "../errors/InvalidPasswordError";
+import InvalidCredentialsError from "../errors/InvalidCredentialsError";
 import PassworHashingdUtil from "../utils/PasswordHashingUtil";
 import UseCase from "./UseCase";
 
@@ -11,11 +12,19 @@ export default class LoginUseCase implements UseCase<Input, Output> {
   ) {}
 
   public async execute(input: Input): Promise<Output> {
-    const user = await this.userRepository.findByEmail(input.email);
+    let user: User;
+    try {
+      user = await this.userRepository.findByEmail(input.email);
+    } catch (error) {
+      throw new InvalidCredentialsError();
+    }
 
-    const isPasswordValid = await PassworHashingdUtil.verify(user.getPassword() as string, input.password);
-    if(!isPasswordValid) {
-      throw new InvalidPasswordError();
+    const isPasswordValid = await PassworHashingdUtil.verify(
+      user.getPassword() as string,
+      input.password
+    );
+    if (!isPasswordValid) {
+      throw new InvalidCredentialsError();
     }
 
     const token = this.jwtUtil.generateToken({
