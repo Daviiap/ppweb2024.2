@@ -1,0 +1,10 @@
+type: "object"
+properties:
+  id:
+    type: "string"
+    example: "ec55230d-e4d3-4b97-baa6-4702131978e5"
+    description: "ID of the error"
+  message:
+    type: "string"
+    example: "{{error_type}}: {{error_message}}"
+    description: "Message of the error"

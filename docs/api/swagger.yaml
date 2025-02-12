@@ -6,10 +6,7 @@ info:
 servers:
   - url: "http://localhost:3080"
 tags:
-  - name: "Health"
-    description: "Operations related to health check"
-  - name: "User"
-    description: "Operations related to user management"
+  $ref: "./tags.swagger.yaml"
 paths:
   /health:
     $ref: "./routes/health.swagger.yaml"
@@ -17,3 +14,6 @@ paths:
     $ref: "./routes/register.swagger.yaml"
   /login:
     $ref: "./routes/login.swagger.yaml"
+components:
+  schemas:
+    $ref: "schemas/index.swagger.yaml"

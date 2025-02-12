@@ -1,0 +1,4 @@
+User:
+  $ref: "./user.swagger.yaml"
+Error:
+  $ref: "./error.swagger.yaml"

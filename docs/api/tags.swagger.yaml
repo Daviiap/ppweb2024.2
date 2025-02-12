@@ -1,0 +1,4 @@
+- name: "Health"
+  description: "Operations related to health check"
+- name: "User"
+  description: "Operations related to user management"

@@ -1,0 +1,19 @@
+type: "object"
+description: "User object"
+properties:
+  id:
+    type: "string"
+    example: "d9954524-334a-4a60-964a-09a299e54d15"
+    description: "ID of the user"
+  name:
+    type: "string"
+    example: "John Doe"
+    description: "Name of the user"
+  email:
+    type: "string"
+    example: "john_doe@example.org"
+    description: "Email of the user"
+required:
+  - "id"
+  - "name"
+  - "email"
