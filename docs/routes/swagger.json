@@ -1,0 +1,224 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Plannig Poker API",
+    "version": "1.0.0",
+    "description": "API to handle Planning Poker requests"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3080"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Check if the server is running",
+        "responses": {
+          "200": {
+            "description": "Server is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "healthy": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Create an accont on the system",
+        "requestBody": {
+          "description": "Account to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john_doe@example.org"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password@123"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Account created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "d9954524-334a-4a60-964a-09a299e54d15"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john_doe@example.org"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Bad request: email should not be empty, email must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login to the system",
+        "requestBody": {
+          "description": "Account to login to",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john_doe@example.org"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password@123"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login made successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ5OTU0NTI0LTMzNGEtNGE2MC05NjRhLTA5YTI5OWU1NGQxNSIsIm5hbWUiOiJEYXZpIEFuZHJhZGUgUG9udGVzIiwiZW1haWwiOiJkYXZpaS5zYXBpZW5zQGdtYWlsLmNvbSIsImlhdCI6MTczOTMyODczNywiZXhwIjoxNzM5MzMyMzM3fQ.XC6p1DAQRazaItFyF_-bBGdF0mNGZzdpoN2eIewWreI"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "d9954524-334a-4a60-964a-09a299e54d15"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "John Doe"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john_doe@example.org"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Bad request: email should not be empty, email must be a string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "ec55230d-e4d3-4b97-baa6-4702131978e5"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Unauthorized: Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
