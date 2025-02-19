@@ -1,5 +1,5 @@
 export default interface UserOrganizationDatabaseRow {
-    personId: string;
-    organizationId: string;
+    person_id: string;
+    organization_id: string;
     role: string;
 }

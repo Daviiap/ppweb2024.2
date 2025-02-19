@@ -1,5 +1,5 @@
 export default interface UserProjectDatabaseRow {
-    personId: string;
-    projectId: string;
+    person_id: string;
+    project_id: string;
     role: string;
 }

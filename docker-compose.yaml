@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/usr/app
     ports:
-      - '${PORT}:${PORT}'
+      - '3080:3080'
     depends_on:
       postgres:
         condition: service_healthy

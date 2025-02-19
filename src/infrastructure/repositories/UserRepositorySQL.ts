@@ -43,7 +43,7 @@ export default class UserRepositorySQL implements UserRepository {
     }
   }
 
-  public async createUser(user: User): Promise<User> {
+  public async save(user: User): Promise<void> {
     try {
       await this.pool.query(
         `
@@ -51,8 +51,6 @@ export default class UserRepositorySQL implements UserRepository {
         VALUES ($1, $2, $3, $4)`,
         [user.getId(), user.getEmail(), user.getName(), user.getPassword()]
       );
-
-      return user;
     } catch (error) {
       throw new DatabaseError(`Error creating user: ${error}`);
     }

@@ -17,7 +17,7 @@ export default class RegisterUserUseCase implements UseCase<Input, Output> {
 
     const user = User.create(input.name, input.email, passwordHash);
 
-    await this.userRepository.createUser(user);
+    await this.userRepository.save(user);
 
     return user;
   }
