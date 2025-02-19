@@ -1,11 +1,20 @@
 import { isEmpty } from "class-validator";
 import ValidationError from "./errors/ValidationError";
+import UserRole from "./UserRole";
+import Organization from "./Organization";
+import Project from "./Project";
 
 export default class User {
+  public static create(name: string, email: string, password?: string): User {
+    const id = crypto.randomUUID();
+    return new User(id, name, email, password);
+  }
+
+  private email: string;
   private readonly id: string;
   private name: string;
-  private email: string;
   private password?: string;
+  private roles: Map<string, UserRole> = new Map<string, UserRole>();
 
   public constructor(
     id: string,
@@ -25,33 +34,32 @@ export default class User {
     return this.id;
   }
 
-  public getName(): string {
-    return this.name;
-  }
-
   public getEmail(): string {
     return this.email;
+  }
+
+  public getName(): string {
+    return this.name;
   }
 
   public getPassword(): string | undefined {
     return this.password;
   }
 
-  public setName(name: string): void {
-    this.name = name;
+  public getRole(id: string): UserRole | undefined {
+    return this.roles.get(id);
   }
 
-  public setEmail(email: string): void {
-    this.email = email;
+  public setName(name: string): void {
+    this.name = name;
   }
 
   public setPassword(password: string): void {
     this.password = password;
   }
 
-  public static create(name: string, email: string, password?: string): User {
-    const id = crypto.randomUUID();
-    return new User(id, name, email, password);
+  public addRole(id: Organization | Project, role: UserRole): void {
+    this.roles.set(id.getId(), role);
   }
 
   private validate(): void {
