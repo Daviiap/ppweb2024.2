@@ -1,14 +1,20 @@
 import { isEmpty } from "class-validator";
 import ValidationError from "./errors/ValidationError";
 import User from "./User";
+import Member from "./Member";
+
+export enum ProjectRoles {
+    MANAGER = "MANAGER",
+    MEMBER = "MEMBER",
+}
 
 export default class Project {
     readonly id: string;
     private name: string;
     private description: string;
-    private members: User[] = [];
+    private members: Member[] = [];
 
-    constructor(id: string, name: string, description: string = "", members: User[] = []) {
+    constructor(id: string, name: string, description: string = "", members: Member[] = []) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -17,7 +23,7 @@ export default class Project {
         this.validate();
     }
 
-    public create(name: string, description: string = "", members: User[] = []): Project {
+    public create(name: string, description: string = "", members: Member[] = []): Project {
         const id = crypto.randomUUID();
         return new Project(id, name, description, members);
     }
@@ -34,7 +40,7 @@ export default class Project {
         return this.description;
     }
 
-    public getMembers(): User[] {
+    public getMembers(): Member[] {
         return this.members;
     }
 
@@ -46,8 +52,8 @@ export default class Project {
         this.description = description;
     }
 
-    public addMember(member: User): void {
-        this.members.push(member);
+    public addMember(user: User, role: string): void {
+        this.members.push(new Member(user, role));
     }
 
     private validate() {

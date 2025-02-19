@@ -1,8 +1,5 @@
 import { isEmpty } from "class-validator";
 import ValidationError from "./errors/ValidationError";
-import UserRole from "./UserRole";
-import Organization from "./Organization";
-import Project from "./Project";
 
 export default class User {
   public static create(name: string, email: string, password?: string): User {
@@ -14,7 +11,6 @@ export default class User {
   private readonly id: string;
   private name: string;
   private password?: string;
-  private roles: Map<string, UserRole> = new Map<string, UserRole>();
 
   public constructor(
     id: string,
@@ -46,20 +42,12 @@ export default class User {
     return this.password;
   }
 
-  public getRole(id: string): UserRole | undefined {
-    return this.roles.get(id);
-  }
-
   public setName(name: string): void {
     this.name = name;
   }
 
   public setPassword(password: string): void {
     this.password = password;
-  }
-
-  public addRole(id: Organization | Project, role: UserRole): void {
-    this.roles.set(id.getId(), role);
   }
 
   private validate(): void {
