@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import * as dotenv from "dotenv";
 import { Pool, PoolConfig } from "pg";
 import ExpressAdapter from "./infrastructure/express/Server";
@@ -11,6 +12,9 @@ import JwtUtil from "./infrastructure/utils/JWTUtil";
 import LoginControllerHttp from "./presentation/controllers/user/LoginController";
 import AuthMiddleware from "./infrastructure/express/middleware/AuthMiddleware";
 import CreateOrganizationControllerHttp from "./presentation/controllers/organization/CreateOrganizationController";
+import OrganizationRepositorySQL from "./infrastructure/repositories/OrganizationRepositorySQL";
+import ProjectRepositorySQL from "./infrastructure/repositories/ProjectRepositorySQL";
+import CardRepositorySQL from "./infrastructure/repositories/CardRepositorySQL";
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -29,12 +33,18 @@ async function main() {
 
   const healthRepository = new HealthRepositorySQL(pool);
   const userRepository = new UserRepositorySQL(pool);
+  const organizationRepository = new OrganizationRepositorySQL(pool);
+  const projectRepository = new ProjectRepositorySQL(pool);
+  const cardRepository = new CardRepositorySQL(pool);
 
   const jwtUtil = new JwtUtil(process.env.JWT_SECRET_KEY as string);
 
   const useCasesFactory = new UseCasesFactory(
     healthRepository,
     userRepository,
+    organizationRepository,
+    projectRepository,
+    cardRepository,
     jwtUtil
   );
 

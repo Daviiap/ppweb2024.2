@@ -23,7 +23,7 @@ export default class Project {
         this.validate();
     }
 
-    public create(name: string, description: string = "", members: Member[] = []): Project {
+    public static create(name: string, description: string = "", members: Member[] = []): Project {
         const id = crypto.randomUUID();
         return new Project(id, name, description, members);
     }

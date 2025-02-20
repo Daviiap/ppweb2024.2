@@ -25,13 +25,15 @@ export default class OrganizationRepositorySQL implements OrganizationRepository
 
             const members = organization.getMembers();
             members.forEach((member, index) => {
-                query += `(${member.getUser().getId()}, ${organization.getId()}, ${member.getRole()})`;
+                query += `('${member.getUser().getId()}', '${organization.getId()}', '${member.getRole()}')`;
                 if (index < members.length - 1) {
                     query += ',';
                 }
             });
 
             query += ` ON CONFLICT (person_id, organization_id) DO UPDATE SET role = EXCLUDED.role`;
+
+            console.log(query);
 
             await client.query(query);
             await client.query('COMMIT');

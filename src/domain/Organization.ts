@@ -30,7 +30,7 @@ export default class Organization {
         this.validate();
     }
 
-    public create(name: string, members: Member[], description: string = "", projects: Project[] = [], cards: Card[] = []): Organization {
+    public static create(name: string, members: Member[], description: string = "", projects: Project[] = [], cards: Card[] = []): Organization {
         const id = crypto.randomUUID();
         return new Organization(id, name, members, description, projects, cards);
     }

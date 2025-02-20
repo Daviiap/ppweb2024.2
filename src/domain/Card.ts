@@ -19,7 +19,7 @@ export default class Card {
         this.validate();
     }
 
-    public create(image: string, name: string, owner: Organization | string, visibility: 'public' | 'private'): Card {
+    public static create(image: string, name: string, owner: Organization | string, visibility: 'public' | 'private'): Card {
         const id = crypto.randomUUID();
         return new Card(id, image, name, owner, visibility);
     }
