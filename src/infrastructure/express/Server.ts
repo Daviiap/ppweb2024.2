@@ -6,15 +6,15 @@ import HttpServer, {
 } from "../../presentation/controllers/HttpServer";
 import ErrorGlobalMiddleware from "./middleware/ErrorMiddleware";
 import swaggerUi from "swagger-ui-express";
-import fs from "fs";
 import path from "path";
 import yaml from "yamljs"
+import AuthMiddleware from "./middleware/AuthMiddleware";
 
 export default class ExpressAdapter implements HttpServer {
   private readonly app: Express;
   private server: http.Server;
 
-  constructor(private readonly errorMiddleware: ErrorGlobalMiddleware) {
+  constructor(private readonly errorMiddleware: ErrorGlobalMiddleware, private readonly authMiddleware: AuthMiddleware) {
     this.app = express();
 
     const swaggerDocument = yaml.load(path.join(__dirname, "../../../docs/openapi.yaml"));
@@ -27,6 +27,7 @@ export default class ExpressAdapter implements HttpServer {
   addRoute(route: routeConfig): void {
     this.app[route.method](
       route.url,
+      route.auth === "jwt" ? this.authMiddleware.authenticate : this.authMiddleware.allow,
       async function (req: Request, res: Response, next: NextFunction) {
         try {
           const output = await route.handle(req);

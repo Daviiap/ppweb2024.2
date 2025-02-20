@@ -7,6 +7,6 @@ export default interface HttpServer {
 export type routeConfig = {
   method: "get" | "post" | "put" | "delete" | "patch";
   url: string;
-  auth: "none";
+  auth: "none" | "jwt";
   handle: (request: HttpRequest) => Promise<HttpResponse>;
 };

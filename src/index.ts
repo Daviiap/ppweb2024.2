@@ -9,6 +9,8 @@ import RegisterControllerHttp from "./presentation/controllers/user/RegisterCont
 import ErrorGlobalMiddleware from "./infrastructure/express/middleware/ErrorMiddleware";
 import JwtUtil from "./infrastructure/utils/JWTUtil";
 import LoginControllerHttp from "./presentation/controllers/user/LoginController";
+import AuthMiddleware from "./infrastructure/express/middleware/AuthMiddleware";
+import CreateOrganizationControllerHttp from "./presentation/controllers/organization/CreateOrganizationController";
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -36,9 +38,14 @@ async function main() {
     jwtUtil
   );
 
+  const authMiddleware = new AuthMiddleware(jwtUtil);
   const errorMiddleware = new ErrorGlobalMiddleware();
-  const httpServer = new ExpressAdapter(errorMiddleware);
+  const httpServer = new ExpressAdapter(errorMiddleware, authMiddleware);
 
+  const createOrganizationControllerHttp = new CreateOrganizationControllerHttp(
+    httpServer,
+    useCasesFactory
+  );
   const healthCheckController = new HealthCheckControllerHttp(
     httpServer,
     useCasesFactory
@@ -49,6 +56,7 @@ async function main() {
   );
   const loginController = new LoginControllerHttp(httpServer, useCasesFactory);
 
+  createOrganizationControllerHttp.setAllControllerRoutes();
   healthCheckController.setAllControllerRoutes();
   registerController.setAllControllerRoutes();
   loginController.setAllControllerRoutes();
