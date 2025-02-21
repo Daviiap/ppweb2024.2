@@ -17,7 +17,9 @@ export default class OrganizationRepositorySQL implements OrganizationRepository
             await client.query(
                 `
                 INSERT INTO organization (id, name, description)
-                VALUES ($1, $2, $3)`,
+                VALUES ($1, $2, $3)
+                ON CONFLICT (id) DO
+                UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description`, 
                 [organization.getId(), organization.getName(), organization.getDescription()]
             );
 

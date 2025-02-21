@@ -1,5 +1,6 @@
 import UseCasesFactory from "../../../application/factory/UseCasesFactory";
 import CreateOrganizationInputDTO, { OwnerInputDTO } from "../../dtos/input/CreateOrganizationDTO";
+import CreateOrganizationOutputDTO from "../../dtos/output/CreateOrganizationOutputDTO";
 import ControllerHttp from "../ControllerHttp";
 import HttpServer from "../HttpServer";
 
@@ -7,7 +8,7 @@ export default class CreateOrganizationControllerHttp implements ControllerHttp 
   constructor(
     readonly httpServer: HttpServer,
     readonly useCasesFactory: UseCasesFactory
-  ) {}
+  ) { }
 
   setAllControllerRoutes(): void {
     this.httpServer.addRoute({
@@ -25,7 +26,12 @@ export default class CreateOrganizationControllerHttp implements ControllerHttp 
           .createCreateOrganizationUseCase()
           .execute(input);
 
-        return { statusCode: 200, body: organization };
+        const output = new CreateOrganizationOutputDTO();
+        output.id = organization.getId();
+        output.name = organization.getName();
+        output.description = organization.getDescription();
+
+        return { statusCode: 201, body: output };
       },
     });
   }
