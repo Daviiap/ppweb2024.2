@@ -9,6 +9,7 @@ import CreateOrganizationUseCase from "../usecases/CreateOrganizationUseCase";
 import OrganizationRepository from "../../domain/repositories/OrganizationRepository";
 import ProjectRepository from "../../domain/repositories/ProjectRepository";
 import CardRepository from "../../domain/repositories/CardRepository";
+import UpdateOrganizationUseCase from "../usecases/UpdateOrganizationUseCase";
 
 export default class UseCasesFactory {
   constructor(
@@ -34,5 +35,9 @@ export default class UseCasesFactory {
 
   public createCreateOrganizationUseCase(): CreateOrganizationUseCase {
     return new CreateOrganizationUseCase(this.organizationRepository);
+  }
+  
+  public createUpdateOrganizationUseCase(): UpdateOrganizationUseCase {
+    return new UpdateOrganizationUseCase(this.organizationRepository);
   }
 }
