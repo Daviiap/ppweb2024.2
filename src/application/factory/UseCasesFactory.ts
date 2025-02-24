@@ -10,6 +10,7 @@ import OrganizationRepository from "../../domain/repositories/OrganizationReposi
 import ProjectRepository from "../../domain/repositories/ProjectRepository";
 import CardRepository from "../../domain/repositories/CardRepository";
 import UpdateOrganizationUseCase from "../usecases/UpdateOrganizationUseCase";
+import ListOrganizationsUseCase from "../usecases/ListOrganizationsUseCase";
 
 export default class UseCasesFactory {
   constructor(
@@ -39,5 +40,9 @@ export default class UseCasesFactory {
   
   public createUpdateOrganizationUseCase(): UpdateOrganizationUseCase {
     return new UpdateOrganizationUseCase(this.organizationRepository);
+  }
+
+  public createListOrganizationsUseCase(): ListOrganizationsUseCase {
+    return new ListOrganizationsUseCase(this.organizationRepository);
   }
 }

@@ -8,6 +8,35 @@ import User from "../../domain/User";
 
 export default class OrganizationRepositorySQL implements OrganizationRepository {
     constructor(private readonly pool: Pool) { }
+    async findManyByUserId(userId: string): Promise<Organization[]> {
+        let result: QueryResult;
+
+        try {
+            result = await this.pool.query(`
+                SELECT
+                    organization.id AS organization_id,
+                    organization.name AS organization_name,
+                    organization.description AS organization_description,
+                FROM
+                    person_organization
+                    LEFT JOIN organization ON person_organization.organization_id = organization.id
+                WHERE
+                    person_organization.person_id = $1`,
+                [userId]
+            );
+        } catch (error) {
+            throw new DatabaseError(`Error finding organization by id: ${error}`);
+        }
+
+        return result.rows.map(row => {
+            return new Organization(
+                row.organization_id,
+                row.organization_name,
+                [],
+                row.organization_description
+            )
+        });
+    }
 
     async save(organization: Organization): Promise<void> {
         const client = await this.pool.connect();

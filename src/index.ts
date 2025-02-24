@@ -16,6 +16,7 @@ import OrganizationRepositorySQL from "./infrastructure/repositories/Organizatio
 import ProjectRepositorySQL from "./infrastructure/repositories/ProjectRepositorySQL";
 import CardRepositorySQL from "./infrastructure/repositories/CardRepositorySQL";
 import UpdateOrganizationControllerHttp from "./presentation/controllers/organization/UpdateOrganizationController";
+import ListOrganizationsControllerHttp from "./presentation/controllers/organization/ListOrganizationsController";
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -69,8 +70,10 @@ async function main() {
     httpServer,
     useCasesFactory
   );
+  const listOrganizationsController = new ListOrganizationsControllerHttp(httpServer, useCasesFactory);
   const loginController = new LoginControllerHttp(httpServer, useCasesFactory);
 
+  listOrganizationsController.setAllControllerRoutes();
   createOrganizationControllerHttp.setAllControllerRoutes();
   updateOrganizationControllerHttp.setAllControllerRoutes();
   healthCheckController.setAllControllerRoutes();
