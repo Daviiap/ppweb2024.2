@@ -8,6 +8,14 @@ import User from "../../domain/User";
 
 export default class OrganizationRepositorySQL implements OrganizationRepository {
     constructor(private readonly pool: Pool) { }
+    async delete(id: string): Promise<void> {
+        try {
+            await this.pool.query(`UPDATE organization SET deleted = TRUE WHERE id = $1`, [id]);
+        } catch (error) {
+            throw new DatabaseError(`Error deleting organization: ${error}`);
+        }
+    }
+
     async findManyByUserId(userId: string): Promise<Organization[]> {
         let result: QueryResult;
 
@@ -21,7 +29,7 @@ export default class OrganizationRepositorySQL implements OrganizationRepository
                     person_organization
                     LEFT JOIN organization ON person_organization.organization_id = organization.id
                 WHERE
-                    person_organization.person_id = $1`,
+                    person_organization.person_id = $1 AND deleted = FALSE`,
                 [userId]
             );
         } catch (error) {
@@ -94,7 +102,7 @@ export default class OrganizationRepositorySQL implements OrganizationRepository
                     LEFT JOIN person_organization ON organization.id = person_organization.organization_id
                     LEFT JOIN person ON person_organization.person_id = person.id
                 WHERE
-                    organization.id = $1`,
+                    organization.id = $1 AND deleted = FALSE`,
                 [id]
             );
         } catch (error) {

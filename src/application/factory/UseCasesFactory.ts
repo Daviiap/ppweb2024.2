@@ -12,6 +12,7 @@ import CardRepository from "../../domain/repositories/CardRepository";
 import UpdateOrganizationUseCase from "../usecases/UpdateOrganizationUseCase";
 import ListOrganizationsUseCase from "../usecases/ListOrganizationsUseCase";
 import GetOrganizationUseCase from "../usecases/GetOrganizationUseCase";
+import DeleteOrganizationUseCase from "../usecases/DeleteOrganizationUseCase";
 
 export default class UseCasesFactory {
   constructor(
@@ -47,7 +48,11 @@ export default class UseCasesFactory {
     return new ListOrganizationsUseCase(this.organizationRepository);
   }
 
-  createGetOrganizationUseCase(): GetOrganizationUseCase {
+  public createGetOrganizationUseCase(): GetOrganizationUseCase {
     return new GetOrganizationUseCase(this.organizationRepository);
+  }
+
+  public createDeleteOrganizationUseCase(): DeleteOrganizationUseCase {
+    return new DeleteOrganizationUseCase(this.organizationRepository);
   }
 }

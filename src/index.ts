@@ -18,6 +18,7 @@ import CardRepositorySQL from "./infrastructure/repositories/CardRepositorySQL";
 import UpdateOrganizationControllerHttp from "./presentation/controllers/organization/UpdateOrganizationController";
 import ListOrganizationsControllerHttp from "./presentation/controllers/organization/ListOrganizationsController";
 import GetOrganizationControllerHttp from "./presentation/controllers/organization/GetOrganizationController";
+import DeleteOrganizationControllerHttp from "./presentation/controllers/organization/DeleteOrganizationController";
 
 async function main() {
   dotenv.config({ path: ".env" });
@@ -73,8 +74,10 @@ async function main() {
   );
   const listOrganizationsController = new ListOrganizationsControllerHttp(httpServer, useCasesFactory);
   const getOrganizationController = new GetOrganizationControllerHttp(httpServer, useCasesFactory);
+  const deleteOrganizationController = new DeleteOrganizationControllerHttp(httpServer, useCasesFactory);
   const loginController = new LoginControllerHttp(httpServer, useCasesFactory);
 
+  deleteOrganizationController.setAllControllerRoutes();
   getOrganizationController.setAllControllerRoutes();
   listOrganizationsController.setAllControllerRoutes();
   createOrganizationControllerHttp.setAllControllerRoutes();
