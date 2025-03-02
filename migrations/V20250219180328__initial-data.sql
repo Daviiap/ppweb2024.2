@@ -84,12 +84,12 @@ VALUES
     (
         '7f111406-d724-47e3-b646-65dbb068eb07',
         '0c7ef55d-72d5-46ea-a463-e4696c7fb572',
-        'owner'
+        'OWNER'
     ),
     (
         '526a7008-f05d-4072-8c3b-6a1e4c20fef7',
         '0c7ef55d-72d5-46ea-a463-e4696c7fb572',
-        'manager'
+        'MANAGER'
     ) ON CONFLICT (person_id, organization_id) DO
 UPDATE
 SET

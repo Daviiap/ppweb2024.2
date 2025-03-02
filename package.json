@@ -11,7 +11,8 @@
     "down-local": "docker compose down -v",
     "create_migration": "./scripts/create_migration.sh",
     "migrate": "./scripts/migrate.sh",
-    "build-docs": "swagger-cli bundle docs/api/swagger.yaml --outfile docs/openapi.yaml --type yaml"
+    "build-docs": "swagger-cli bundle docs/api/swagger.yaml --outfile docs/openapi.yaml --type yaml",
+    "test": "jest ./test/unit --maxWorkers=2  --no-cache --coverage"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "@types/argon2": "^0.14.1",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/pg": "^8.11.11",
     "@types/swagger-jsdoc": "^6.0.4",
@@ -36,12 +38,14 @@
     "cors": "^2.8.5",
     "dotenv-safe": "^9.1.0",
     "express": "^4.21.2",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "swagger-cli": "^4.0.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "ts-jest": "^29.2.6",
     "yamljs": "^0.3.0"
   }
 }

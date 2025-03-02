@@ -1,6 +1,6 @@
-import { isEmpty } from "class-validator";
-import ValidationError from "./errors/ValidationError";
-import Organization from "./Organization";
+import { isEmpty } from 'class-validator';
+import ValidationError from './errors/ValidationError';
+import Organization from './Organization';
 
 export default class Card {
     private readonly id: string;
@@ -46,23 +46,27 @@ export default class Card {
 
     public setImage(image: string): void {
         this.image = image;
+        this.validate();
     }
 
     public setName(name: string): void {
         this.name = name;
+        this.validate();
     }
 
     public setVisibility(visibility: 'public' | 'private'): void {
         this.visibility = visibility;
+        this.validate();
     }
 
     private validate(): void {
-        if (isEmpty(this.id) || isEmpty(this.name) || isEmpty(this.image) || isEmpty(this.owner)) {
+        if (isEmpty(this.id) || isEmpty(this.name) || isEmpty(this.image) || isEmpty(this.owner) || isEmpty(this.visibility)) {
             throw new ValidationError([
-                { field: "id", message: "is required" },
-                { field: "name", message: "is required" },
-                { field: "image", message: "is required" },
-                { field: "owner", message: "is required" },
+                { field: 'id', message: 'is required' },
+                { field: 'name', message: 'is required' },
+                { field: 'image', message: 'is required' },
+                { field: 'owner', message: 'is required' },
+                { field: 'visibility', message: 'is required' },
             ]);
         }
     }

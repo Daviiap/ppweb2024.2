@@ -44,10 +44,17 @@ export default class User {
 
   public setName(name: string): void {
     this.name = name;
+    this.validate();
   }
 
   public setPassword(password: string): void {
+    if (password.length < 8) {
+      throw new ValidationError([
+        { field: "password", message: "must be at least 8 characters long" },
+      ]);
+    }
     this.password = password;
+    this.validate();
   }
 
   private validate(): void {

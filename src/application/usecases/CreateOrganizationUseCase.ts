@@ -10,7 +10,7 @@ export default class CreateOrganizationUseCase implements UseCase<Input, Output>
     ) { }
 
     public async execute(input: Input): Promise<Output> {
-        const organization = Organization.create(input.name, [new Member(new User(input.owner.id, input.owner.name, input.owner.email), 'owner')], input.description);
+        const organization = Organization.create(input.name, [new Member(new User(input.owner.id, input.owner.name, input.owner.email), 'OWNER')], input.description);
         
         await this.organizationRepository.save(organization);
 

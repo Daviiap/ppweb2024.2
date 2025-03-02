@@ -9,23 +9,23 @@ export enum ProjectRoles {
 }
 
 export default class Project {
-    readonly id: string;
+    private readonly id: string;
     private name: string;
     private description: string;
-    private members: Member[] = [];
+    private readonly members: Member[] = [];
 
-    constructor(id: string, name: string, description: string = "", members: Member[] = []) {
+    public static create(name: string, description: string = "", members: Member[] = []): Project {
+        const id = crypto.randomUUID();
+        return new Project(id, name, description, members);
+    }
+    
+    public constructor(id: string, name: string, description: string = "", members: Member[] = []) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.members = members;
 
         this.validate();
-    }
-
-    public static create(name: string, description: string = "", members: Member[] = []): Project {
-        const id = crypto.randomUUID();
-        return new Project(id, name, description, members);
     }
 
     public getId(): string {
@@ -46,23 +46,40 @@ export default class Project {
 
     public setName(name: string): void {
         this.name = name;
+        this.validate();
     }
 
     public setDescription(description: string): void {
         this.description = description;
+        this.validate();
     }
 
     public addMember(user: User, role: string): void {
         this.members.push(new Member(user, role));
+        this.validate();
     }
 
     private validate() {
-        if (isEmpty(this.id) || isEmpty(this.name)) {
-            throw new ValidationError([
-                { field: "id", message: "is required" },
-                { field: "name", message: "is required" },
-                { field: "description", message: "is required" },
-            ]);
+        const errors = [];
+
+        if (isEmpty(this.id)) {
+            errors.push({ field: "id", message: "is required" });
         }
+
+        if (isEmpty(this.name)) {
+            errors.push({ field: "name", message: "is required" });
+        }
+
+        if (errors.length > 0) {
+            throw new ValidationError(errors);
+        }
+
+        this.members.forEach(member => {
+            if (!Object.values(ProjectRoles).includes(member.getRole() as ProjectRoles)) {
+                throw new ValidationError([
+                    { field: "members", message: `invalid role for member: ${member.getRole()}` },
+                ]);
+            }
+        });
     }
 }

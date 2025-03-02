@@ -15,7 +15,7 @@ export default class UpdateOrganizationUseCase implements UseCase<Input, Output>
         
         let isOwner = false;
         organization.getMembers().forEach(member => {
-            if (member.getUser().getId() === input.owner.id && member.getRole() === 'owner') {
+            if (member.getUser().getId() === input.owner.id && member.getRole() === 'OWNER') {
                 isOwner = true;
             }
         });
