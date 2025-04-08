@@ -4,4 +4,7 @@ export default class UpdateOrganizationOutputDTO implements OutputDTO {
     id: string;
     name: string;
     description: string;
+    cards: any[];
+    members: any[];
+    projects: any[];
 }

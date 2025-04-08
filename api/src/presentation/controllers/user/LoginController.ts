@@ -1,7 +1,6 @@
 import UseCasesFactory from "../../../application/factory/UseCasesFactory";
 import LoginInputDTO from "../../dtos/input/LoginInputDTO";
 import LoginOutputDTO from "../../dtos/output/LoginOutputDTO";
-import RegisterUserOutputDTO from "../../dtos/output/RegisterUserOutputDTO";
 import ControllerHttp from "../ControllerHttp";
 import HttpServer from "../HttpServer";
 

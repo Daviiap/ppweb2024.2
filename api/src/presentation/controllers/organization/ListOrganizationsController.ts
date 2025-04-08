@@ -31,6 +31,7 @@ export default class ListOrganizationsControllerHttp implements ControllerHttp {
             id: organization.getId(),
             name: organization.getName(),
             description: organization.getDescription(),
+            members: organization.getMembers(),
           };
         });
 

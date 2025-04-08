@@ -30,6 +30,9 @@ export default class GetOrganizationControllerHttp implements ControllerHttp {
         output.id = organization.getId();
         output.name = organization.getName();
         output.description = organization.getDescription();
+        output.cards = organization.getCards();
+        output.members = organization.getMembers();
+        output.projects = organization.getProjects(); 
 
         return { statusCode: 200, body: output };
       },

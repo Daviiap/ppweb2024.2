@@ -5,5 +5,6 @@ export default class ListOrganizationsOutputDTO implements OutputDTO {
         id: string;
         name: string;
         description: string;
+        members: any[];
     }[];
 }

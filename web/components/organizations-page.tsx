@@ -5,10 +5,20 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import { Search, User, LogOut } from "lucide-react"
 
+interface Member {
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+  role: string
+}
+
 interface Organization {
   id: string
   name: string
   description: string
+  members?: Member[]
 }
 
 export default function OrganizationsPage() {
@@ -69,7 +79,6 @@ export default function OrganizationsPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
       <header className="p-4 border-b border-gray-800">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-sm font-light">Your Planning Poker / Organizations</h1>
@@ -83,11 +92,9 @@ export default function OrganizationsPage() {
         </div>
       </header>
 
-      {/* Main content */}
       <main className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-medium mb-8">Organizations</h1>
 
-        {/* Search bar */}
         <div className="relative mb-8">
           <input
             type="text"
@@ -101,7 +108,6 @@ export default function OrganizationsPage() {
           </div>
         </div>
 
-        {/* Organizations list */}
         {loading ? (
           <div className="text-center py-8">Loading organizations...</div>
         ) : error ? (
@@ -126,11 +132,12 @@ export default function OrganizationsPage() {
                   </div>
                   <div>
                     <h3 className="font-medium">{org.name}</h3>
+                    {org.description && <p className="text-sm text-gray-400 mt-1 line-clamp-1">{org.description}</p>}
                   </div>
                 </div>
                 <div className="flex items-center text-gray-400">
                   <User size={16} className="mr-2" />
-                  <span>120</span>
+                  <span>{org.members ? org.members.length : 0}</span>
                 </div>
               </div>
             ))}
